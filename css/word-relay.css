@@ -1,0 +1,662 @@
+/* 야구장 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #87CEEB 0%, #98FB98 50%, #90EE90 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 야구장 배경 */
+.stadium-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 70%),
+        linear-gradient(45deg, #2d5016 0%, #3d6b1a 50%, #2d5016 100%);
+}
+
+.field-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.grass-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0,60,0,0.05) 2px,
+            rgba(0,60,0,0.05) 4px
+        );
+}
+
+/* 전광판 스타일 - 시멘트 느낌 */
+.scoreboard {
+    position: fixed;
+    top: 20px;
+    background: linear-gradient(145deg, #8b8b8b, #a0a0a0, #6b6b6b);
+    border: 4px solid #5a5a5a;
+    border-radius: 8px;
+    padding: 15px;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    min-width: 250px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.right-scoreboard {
+    right: 20px;
+    top: 20px;
+    min-width: 300px;
+    max-width: 350px;
+}
+
+.left-scoreboard {
+    left: 20px;
+    min-width: 320px;
+    max-width: 380px;
+}
+
+@keyframes scoreboardGlow {
+    0% {
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.5),
+            inset 0 0 20px rgba(0, 255, 0, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 30px rgba(255, 215, 0, 0.8),
+            inset 0 0 30px rgba(0, 255, 0, 0.2);
+    }
+}
+
+.scoreboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.team-name {
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.vs {
+    color: #ffffff;
+    font-size: 26px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.scoreboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.inning, .score, .attempts {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rules-display {
+    border-top: 1px solid #ffffff;
+    padding-top: 15px;
+    font-size: 20px;
+    line-height: 1.8;
+}
+
+.rule-item {
+    margin: 12px 0;
+    color: #ffffff;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.rule-item:last-child {
+    border-bottom: none;
+}
+
+@keyframes ruleGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+    }
+}
+
+.rules-title {
+    color: #ffffff;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* 스트라이크존 */
+.strike-zone {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.zone-border {
+    width: 120px;
+    height: 180px;
+    border: 3px solid #ffd700;
+    border-radius: 8px;
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.08));
+    box-shadow: 
+        0 0 15px rgba(255, 215, 0, 0.4),
+        inset 0 0 15px rgba(255, 215, 0, 0.15);
+    animation: zoneGlow 3s ease-in-out infinite alternate;
+    position: relative;
+    overflow: hidden;
+}
+
+.net-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.6;
+    animation: netShimmer 2s ease-in-out infinite alternate;
+}
+
+@keyframes netShimmer {
+    0% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.zone-label {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffd700;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    letter-spacing: 1px;
+}
+
+@keyframes zoneGlow {
+    0% {
+        box-shadow: 
+            0 0 15px rgba(255, 215, 0, 0.4),
+            inset 0 0 15px rgba(255, 215, 0, 0.15);
+    }
+    100% {
+        box-shadow: 
+            0 0 25px rgba(255, 215, 0, 0.6),
+            inset 0 0 25px rgba(255, 215, 0, 0.25);
+    }
+}
+
+
+.container {
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,240,240,0.95));
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 
+        0 8px 32px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.2);
+    max-width: 600px;
+    margin: 50px auto;
+    position: relative;
+    z-index: 10;
+}
+
+
+.game-info {
+    background-color: #e8f4fd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid #2196F3;
+}
+
+.input-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#input {
+    width: 200px;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    outline: none;
+}
+
+#input:focus {
+    border-color: #4CAF50;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 통합 메인 전광판 */
+.main-scoreboard {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+    border: 3px solid #ffd700;
+    border-radius: 15px;
+    padding: 20px 40px;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    box-shadow:
+        0 0 25px rgba(255, 215, 0, 0.6),
+        inset 0 0 25px rgba(255, 255, 0, 0.1);
+    animation: mainScoreboardGlow 2s ease-in-out infinite alternate;
+    z-index: 100;
+    min-width: 500px;
+    max-width: 80%;
+}
+
+.game-title {
+    color: #ffd700;
+    font-size: 2.2em;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.game-status {
+    color: #ffff00;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+    white-space: nowrap;
+}
+
+@keyframes mainScoreboardGlow {
+    0% {
+        box-shadow:
+            0 0 25px rgba(255, 215, 0, 0.6),
+            inset 0 0 25px rgba(255, 255, 0, 0.1);
+    }
+    100% {
+        box-shadow:
+            0 0 35px rgba(255, 215, 0, 0.8),
+            inset 0 0 35px rgba(255, 255, 0, 0.2);
+    }
+}
+
+@keyframes logsGlow {
+    0% {
+        box-shadow: 
+            0 0 20px rgba(0, 255, 0, 0.3),
+            inset 0 0 20px rgba(0, 255, 0, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 30px rgba(0, 255, 0, 0.5),
+            inset 0 0 30px rgba(0, 255, 0, 0.2);
+    }
+}
+
+.rules {
+    background-color: #fff3cd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ffc107;
+}
+
+.rules h3 {
+    margin-top: 0;
+    color: #856404;
+}
+
+.rules ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.rules li {
+    margin: 5px 0;
+}
+
+/* 애니메이션 스타일 */
+@keyframes pitch {
+    0% {
+        transform: translateZ(-1000px) translateY(0px) rotate(0deg) scale(0.1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        transform: translateZ(-800px) translateY(-50px) rotate(45deg) scale(0.3);
+    }
+    25% {
+        transform: translateZ(-600px) translateY(-100px) rotate(90deg) scale(0.5);
+    }
+    40% {
+        transform: translateZ(-400px) translateY(-150px) rotate(135deg) scale(0.7);
+    }
+    60% {
+        transform: translateZ(-200px) translateY(-100px) rotate(180deg) scale(0.9);
+    }
+    80% {
+        transform: translateZ(-50px) translateY(-50px) rotate(225deg) scale(1.1);
+    }
+    100% {
+        transform: translateZ(0px) translateY(0px) rotate(360deg) scale(1.2);
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes resultPop {
+    0% {
+        transform: scale(0) rotate(0deg) translateY(20px);
+        opacity: 0;
+        filter: blur(5px);
+    }
+    25% {
+        transform: scale(0.8) rotate(90deg) translateY(-10px);
+        opacity: 0.8;
+        filter: blur(2px);
+    }
+    50% {
+        transform: scale(1.3) rotate(180deg) translateY(-20px);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    75% {
+        transform: scale(1.1) rotate(270deg) translateY(-5px);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    100% {
+        transform: scale(1) rotate(360deg) translateY(0px);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+.ball-animation {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background:
+        radial-gradient(circle at 30% 30%, #ffffff, transparent 50%),
+        radial-gradient(circle, #ff6b6b 0%, #ee5a24 50%, #c23616 100%);
+    border-radius: 50%;
+    box-shadow:
+        0 0 20px rgba(255, 107, 107, 0.8),
+        inset -5px -5px 15px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(255, 107, 107, 0.3);
+    animation: pitch 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    border: 3px solid #fff;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 개별 공 던지기 애니메이션 */
+.pitch-ball {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow:
+        0 0 10px rgba(0, 0, 0, 0.3),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+    animation: ballPitch 2s ease-out forwards;
+    z-index: 15;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes ballPitch {
+    0% {
+        transform: translate(-50%, -50%) scale(0.1);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+}
+
+
+.result-animation {
+    animation: resultPop 0.6s ease-out;
+}
+
+
+/* 게임 로그 애니메이션 */
+#logs {
+    position: relative;
+    overflow: hidden;
+}
+
+.log-entry {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 홈런 애니메이션 */
+@keyframes homerun {
+    0% {
+        transform: scale(0.5) rotate(0deg);
+        color: #333;
+        text-shadow: 0 0 0 transparent;
+    }
+    25% {
+        transform: scale(1.2) rotate(5deg);
+        color: #ff6b6b;
+        text-shadow: 0 0 10px #ff6b6b;
+    }
+    50% {
+        transform: scale(1.4) rotate(-5deg);
+        color: #ffa500;
+        text-shadow: 0 0 20px #ffa500, 0 0 30px #ffa500;
+    }
+    75% {
+        transform: scale(1.2) rotate(3deg);
+        color: #ff6b6b;
+        text-shadow: 0 0 15px #ff6b6b;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        color: #333;
+        text-shadow: 0 0 0 transparent;
+    }
+}
+
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.homerun-animation {
+    animation: homerun 2s ease-in-out infinite;
+    font-weight: bold;
+    font-size: 1.5em;
+    position: relative;
+    text-align: center;
+}
+
+.homerun-animation::before {
+    content: '🎉';
+    position: absolute;
+    left: -30px;
+    animation: confetti 1s ease-out infinite;
+}
+
+.homerun-animation::after {
+    content: '🎊';
+    position: absolute;
+    right: -30px;
+    animation: confetti 1s ease-out infinite 0.5s;
+}
+
+/* 게임 오버 애니메이션 */
+@keyframes gameOver {
+    0% {
+        transform: scale(1);
+        color: #333;
+    }
+    50% {
+        transform: scale(1.1);
+        color: #ff4757;
+    }
+    100% {
+        transform: scale(1);
+        color: #ff4757;
+    }
+}
+
+.game-over-animation {
+    animation: gameOver 1s ease-in-out;
+    font-weight: bold;
+}
+
+/* 하단 입력 영역 */
+.bottom-input-area {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(45, 45, 45, 0.95));
+    border: 3px solid #ffd700;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.5),
+        inset 0 0 20px rgba(0, 255, 0, 0.1);
+    animation: scoreboardGlow 3s ease-in-out infinite alternate;
+}
+
+/* 우측 전광판 내 입력 히스토리 섹션 */
+.right-scoreboard .input-section {
+    border-top: 1px solid #00ff00;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.input-title {
+    color: #ffd700;
+    font-size: 20px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+.input-display {
+    font-size: 16px;
+    line-height: 1.4;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.input-item {
+    margin: 8px 0;
+    color: #ffff00;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 0, 0.2);
+    animation: inputGlow 2s ease-in-out infinite alternate;
+}
+
+.input-item:last-child {
+    border-bottom: none;
+}
+
+@keyframes inputGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+    }
+}
+

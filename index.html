@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구 게임</title>
+    <link rel="stylesheet" href="css/word-relay.css">
+</head>
+<body>
+    <!-- 야구장 배경 -->
+    <div class="stadium-background">
+        <div class="field-lines"></div>
+        <div class="grass-pattern"></div>
+    </div>
+    
+    <!-- 우측 전광판 (게임 정보 + 입력 히스토리) -->
+    <div class="scoreboard right-scoreboard">
+        <div class="scoreboard-header">
+            <div class="team-name">HOME</div>
+            <div class="vs">VS</div>
+            <div class="team-name">GUEST</div>
+        </div>
+        <div class="scoreboard-content">
+            <div class="inning">INNING: <span id="current-inning">1</span></div>
+            <div class="score">SCORE: <span id="current-score">0</span></div>
+            <div class="attempts">ATTEMPTS: <span id="attempts-left">10</span></div>
+        </div>
+        <div class="input-section">
+            <div class="input-title">INPUT HISTORY</div>
+            <div class="input-display" id="input-display">
+                <div class="input-item">게임을 시작하세요!</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 좌측 전광판 (규칙) -->
+    <div class="scoreboard left-scoreboard">
+        <div class="scoreboard-header">
+            <div class="rules-title">GAME RULES</div>
+        </div>
+        <div class="rules-display" id="rules-display">
+            <div class="rule-item">🎯 4자리 중복되지 않는 숫자</div>
+            <div class="rule-item">⚾ 스트라이크: 숫자+위치 모두 맞음</div>
+            <div class="rule-item">🏃 볼: 숫자는 맞지만 위치 틀림</div>
+            <div class="rule-item">⏰ 10번의 기회</div>
+            <div class="rule-item">🔢 1~9 사이 숫자만 사용</div>
+        </div>
+    </div>
+    
+    <!-- 가운데 스트라이크존 -->
+    <div class="strike-zone">
+        <div class="zone-border">
+            <div class="net-pattern"></div>
+        </div>
+        <div class="zone-label">STRIKE ZONE</div>
+    </div>
+    
+    <!-- 통합 게임 전광판 -->
+    <div class="main-scoreboard">
+        <div class="game-title">⚾ 숫자야구 게임 ⚾</div>
+        <div id="logs" class="game-status">게임을 시작하세요! 4자리 숫자를 입력해주세요.</div>
+    </div>
+    
+    <!-- 하단 입력 영역 -->
+    <div class="bottom-input-area">
+        <form class="input-section">
+            <input type="text" id="input" placeholder="4자리 숫자 입력" maxlength="4">
+            <button type="submit">플레이볼!</button>
+        </form>
+    </div>
+    
+    <script src="js/baesbull.js"></script>
+</body>
+</html>
