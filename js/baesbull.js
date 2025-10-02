@@ -28,10 +28,17 @@ function updateScoreboard() {
     currentScore.textContent = tries.length;
 }
 
-function updateInputDisplay(inputValue) {
+function updateInputDisplay(inputValue, strike = 0, ball = 0, out = 0) {
     const inputItem = document.createElement('div');
     inputItem.className = 'input-item';
-    inputItem.textContent = `입력: ${inputValue}`;
+    
+    // 결과 정보를 포함한 텍스트 생성
+    let resultText = `입력: ${inputValue}`;
+    if (strike > 0 || ball > 0 || out > 0) {
+        resultText += ` | S:${strike} B:${ball} O:${out}`;
+    }
+    
+    inputItem.textContent = resultText;
     inputDisplay.appendChild(inputItem);
 
     // 스크롤을 맨 아래로
@@ -175,9 +182,6 @@ form.addEventListener('submit', (event) => {
         return;
     }
     
-    // 입력한 숫자를 전광판에 표시
-    updateInputDisplay(value);
-
     // 정답 확인
     if (answerArray.join('') === value) {
         showHomerun();
@@ -193,6 +197,7 @@ form.addEventListener('submit', (event) => {
     // 스트라이크와 볼 계산
     let strike = 0;
     let ball = 0;
+    let out = 0;
 
     for (let i = 0; i < answerArray.length; i++) {
         const index = value.indexOf(answerArray[i]);
@@ -203,8 +208,13 @@ form.addEventListener('submit', (event) => {
             } else {
                 ball += 1; // 다른 위치에 같은 숫자 = 볼
             }
+        } else {
+            out += 1; // 정답에 없는 숫자 = 아웃
         }
     }
+
+    // 입력한 숫자와 결과를 전광판에 표시
+    updateInputDisplay(value, strike, ball, out);
 
     // 각 숫자별 결과 배열 생성
     const results = [];
